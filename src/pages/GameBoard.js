@@ -1,77 +1,60 @@
       
 import React , { useState , useEffect,useLayoutEffect,useRef} from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import Missile from "./Missile";
+import Missile from "../components/Missile";
 import { updateArrow } from "../Redux/arrowSlice";
 
 const GameBoard = () => {
     
-    const dispatch = useDispatch()
- 
-                
+    const dispatch = useDispatch()               
     //  initial coordinates of the text
-    const [alienX, setX] = useState (0);
-    const [alienY, setY] = useState (0);
+    const [alienShipX, setX] = useState (0);
+    const [alienShipY, setY] = useState (0);
 
     // initial coordinate of the missle
-
     const gameboardref = useRef(null);
+    // Define the dimensions of the text
+    const alienShipWidth = 100;
+    const alienShipHeight = 100;
 
-
-      // Define the dimensions of the text
-    const textWidth = 100;
-    const textHeight = 100;
-
-      
- 
     useEffect (() => {
 
-                // the dimensions of the div
-            const divWidth = 800;
-            const divHeight = 546;
-        
-          
-            // generate random coordinates within the div boundaries
-            const maxX = divWidth - textWidth;
-            const maxY = divHeight - textHeight;
-        
-            const randomX = Math.floor (Math.random () * maxX);
-            const randomY = Math.floor (Math.random () * maxY);
+      const gameBoardElement = gameboardref.current;
+      const gameboardRect = gameBoardElement.getBoundingClientRect();
+      
+
+      // the dimensions of the div
+      const divWidth = gameboardRect.width;
+      const divHeight = gameboardRect.height;
+      // generate random coordinates within the div boundaries
+      const maxX = divWidth - alienShipWidth;
+      const maxY = divHeight - alienShipHeight;
+      const randomX = Math.floor (Math.random () * maxX);
+      const randomY = Math.floor (Math.random () * maxY);
                   
-            // Set the state with the new coordinates
-            setX (randomX);
-            setY (randomY);
+      // Set the state with the new coordinates
+      setX (randomX);
+      setY (randomY);
     },[]);
 
     
 
 
     const alienTextStyle = {
-            width: `${textWidth}px`,
-            height: `${textHeight}px`,
-            color : 'white',
-            position: "absolute",
-            left: `${alienX}px`,
-            top: `${alienY}px`,
+      width: `${alienShipWidth}px`,
+      height: `${alienShipHeight}px`,
+      color : 'white',
+      position: "absolute",
+      left: `${alienShipX}px`,
+      top: `${alienShipY}px`,
     };
 
-
-    
-
-        
-    const keyDownEvent = (event) => {
-            
-        dispatch(updateArrow(event.code))
-    };
- 
- 
-   
 
     return (
-        <div   ref={gameboardref} className=" mt-[5%] mx-auto w-[95%] h-[75%] bg-black" style={{position: "relative"}} onKeyDown={keyDownEvent} tabIndex={0}>
+      <div ref={gameboardref} className=" mt-[5%] mx-auto w-[95%] h-[75%] bg-black" style={{position: "relative"}} onKeyDown={ (event)=>{dispatch(updateArrow(event.code))}} tabIndex={0}>
           <p  style={alienTextStyle}>ship</p> { /*the alien ship*/} 
-          <Missile gameboardRef={gameboardref}  alienX = {alienX} alienY = {alienY} />
-        </div>
+          <Missile gameboardRef={gameboardref}  alienX = {alienShipX} alienY = {alienShipY} />
+      </div>
     )
 }
 
@@ -93,3 +76,10 @@ export default GameBoard
 
 
 
+
+    
+
+        
+ 
+ 
+   

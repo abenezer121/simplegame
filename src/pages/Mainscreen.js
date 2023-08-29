@@ -11,7 +11,11 @@ import GameBoard from "./GameBoard";
 const GameScreen = () => {
                     return (
                         <div className=" mt-[10%] h-full items-center">
-                            <p>Space invasion</p>
+                            <p className="text-3xl font-bold">Space invasion</p>
+                            <div className="flex mx-[3%] items-center">
+                                <p className="text-xl ">Generation</p>
+                                <p className="text-xl mx-[10%]">100</p>
+                            </div>
                             <GameBoard/>
                         </div>
                     )
